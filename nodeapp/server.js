@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const mongoConfig = require('./DBConfig');
+const mongoConfig = require('./DBConfig/Database');
 const express = require('express');
 const cors = require('cors');
 
@@ -20,8 +20,7 @@ const mongoURL = `mongodb://${mongoConfig.USER}:${mongoConfig.PASSWORD}@${mongoC
 mongoose
   .connect(mongoURL, {
     useNewUrlParser: true,
-    useUnifiedTopology: true,
-    maxMsgSizeMS: 67108864
+    useUnifiedTopology: true
   })
   .then(() => {
     console.log('Connected to MongoDB');
