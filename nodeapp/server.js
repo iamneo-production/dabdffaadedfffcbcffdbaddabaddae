@@ -27,6 +27,7 @@ mongoose
   .connect(mongoURL, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
+    poolSize: 10 
   })
   .then(() => {
     console.log('Connected to MongoDB');
