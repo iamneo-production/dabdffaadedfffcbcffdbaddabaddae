@@ -5,7 +5,7 @@ const Cart = database.Cart;
 // Get All Products
 exports.getAllProducts = async (req, res) => {
   try {
-    console.log("hello");
+    // console.log("hello");
     const products = await Product.find();
     res.status(200).json(products);
   } catch (error) {

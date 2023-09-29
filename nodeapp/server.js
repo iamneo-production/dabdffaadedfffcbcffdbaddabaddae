@@ -15,12 +15,18 @@ app.use(cors({
 
 app.disable("x-powered-by");
 
-const mongoURL = `mongodb://${mongoConfig.USER}:${mongoConfig.PASSWORD}@${mongoConfig.HOST}:${mongoConfig.PORT}/${mongoConfig.DB}`;
 
+// Construct the MongoDB connection URL
+const mongoURL = `mongodb://${mongoConfig.HOST}:${mongoConfig.PORT}/${mongoConfig.DB}`;
+
+// Optional: If you have authentication enabled, you can include the username and password in the URL
+// const mongoURL = `mongodb://${mongoConfig.USER}:${mongoConfig.PASSWORD}@${mongoConfig.HOST}:${mongoConfig.PORT}/${mongoConfig.DB}`;
+
+// Connect to MongoDB
 mongoose
   .connect(mongoURL, {
     useNewUrlParser: true,
-    useUnifiedTopology: true
+    useUnifiedTopology: true,
   })
   .then(() => {
     console.log('Connected to MongoDB');
