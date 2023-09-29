@@ -1,32 +1,28 @@
-const database = require("../models")
-const User = database.user;
+const database = require("../models");
+const User = database.User;
 
-//Login user
-exports.userLogin = async (req,res) => {
+// Login user
+exports.userLogin = async (req, res) => {
+    const { email, password } = req.body;
+    try {
+        const user = await User.findOne({ email, password });
+        if (user) {
+            res.status(200).json(user);
+        } else {
+            res.status(401).json({ message: "Invalid credentials" });
+        }
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
 
-    let email = req.body.email;
-    let password = req.body.password;
-
-    await User.findOne({where: { email: email, password: password }})
-    .then( data => {
-      res.status(200).json(data);
-    }).catch( err => {
-      res.status(500).json(err);
-    });
-}
-
-//create New User
-exports.createUser = async (req,res) => {
-    let user = req.body;
-
-    await User.create(user)
-        .then( data => {
-          res.status(200).send(data);
-        })
-        .catch( err => {
-          res.status(500).send({
-            message:
-              err.message
-          });
-        });
-}
+// Create New User
+exports.createUser = async (req, res) => {
+    const user = req.body;
+    try {
+        const newUser = await User.create(user);
+        res.status(200).json(newUser);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
