@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const mongoConfig = require('./DBConfig/Database.config');
+const mongoConfig = require('./DBConfig');
 const express = require('express');
 const cors = require('cors');
 
