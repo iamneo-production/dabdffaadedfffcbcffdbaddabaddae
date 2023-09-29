@@ -1,53 +1,47 @@
-const database = require("../models")
-const Order = database.order;
+const database = require("../models");
+const Order = database.Order;
 
-//get All Orders
+// Get All Orders
 exports.getAllOrders = async (req, res) => {
   const userId = req.params.id;
-  await Order.findAll({where: { userId: userId }})
-  .then( data => {
-    res.status(200).json(data);
-  }).catch( err => {
-    res.status(401).json(err);
-  })
-}
+  try {
+    const orders = await Order.find({ userId: userId });
+    res.status(200).json(orders);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
 
-//Add all Orders
+// Add Orders
 exports.addOrder = async (req, res) => {
-    const body = req.body;
+  const body = req.body;
 
-    body.forEach( async element =>{
-        delete element.orderId;
-        await Order.create(element);
-    })
-
+  try {
+    await Order.insertMany(body);
     res.status(200).send(true);
-}
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
 
-//Remove One order
+// Remove One Order
 exports.deleteOneOrder = async (req, res) => {
-
   const id = req.params.id;
 
-  await Order.destroy({
-    where : {
-        orderId : id
-    }
-  }).then(data =>{
+  try {
+    await Order.deleteOne({ _id: id });
     res.status(200).send();
-  })
-}
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
 
-//Remove all items from order
+// Remove All Orders
 exports.deleteAllOrders = async (req, res) => {
-
-  // const order = await Order.findAll();
-
-  // order.forEach(async element =>{
-    await Order.destroy({
-      where: {},
-      truncate: true
-  });
-  // })
-  res.status(200).json();
-}
+  try {
+    await Order.deleteMany({});
+    res.status(200).json();
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};

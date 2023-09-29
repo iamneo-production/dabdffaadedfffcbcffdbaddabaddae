@@ -1,20 +1,55 @@
-const dbConfig = require("../DBConfig/Database");
+const mongoose = require('mongoose');
+const { v4: uuidv4 } = require('uuid');
 
-const Sequelize = require("sequelize");
-const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
-  host: dbConfig.HOST,
-  dialect: dbConfig.dialect,
-  operatorsAliases: 0,
+const cartSchema = new mongoose.Schema({
+  cartId: {
+    type: String,
+    default: uuidv4,
+    required: true,
+    unique: true
+  },
+  // Define other properties for your cart schema
 });
 
-const database = {};
+const orderSchema = new mongoose.Schema({
+  orderId: {
+    type: Number,
+    required: true,
+    unique: true
+  },
+  // Define other properties for your order schema
+});
 
-database.Sequelize = Sequelize;
-database.sequelize = sequelize;
+const productSchema = new mongoose.Schema({
+  productId: {
+    type: String,
+    default: uuidv4,
+    required: true,
+    unique: true
+  },
+  // Define other properties for your product schema
+});
 
-database.cart = require("./Cart.js")(sequelize, Sequelize);
-database.order = require("./Order.js")(sequelize, Sequelize);
-database.product = require("./Product.js")(sequelize, Sequelize);
-database.user = require("./User.js")(sequelize, Sequelize);
+const userSchema = new mongoose.Schema({
+  userId: {
+    type: String,
+    default: uuidv4,
+    required: true,
+    unique: true
+  },
+  // Define other properties for your user schema
+});
+
+const Cart = mongoose.model('Cart', cartSchema);
+const Order = mongoose.model('Order', orderSchema);
+const Product = mongoose.model('Product', productSchema);
+const User = mongoose.model('User', userSchema);
+
+const database = {
+  Cart: Cart,
+  Order: Order,
+  Product: Product,
+  User: User
+};
 
 module.exports = database;
