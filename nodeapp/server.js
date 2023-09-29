@@ -21,6 +21,7 @@ mongoose
   .connect(mongoURL, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
+    serverSelectionTimeoutMS: 30000 // 30 seconds timeout
   })
   .then(() => {
     console.log('Connected to MongoDB');
